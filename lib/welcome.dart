@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jethi_tech/helper/buttons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jethi_tech/screens/addinfo.dart';
+import 'package:jethi_tech/screens/show.dart';
+import 'package:get_storage/get_storage.dart';
 
 const list = {
   "users": [
@@ -22,7 +24,18 @@ const list = {
   ]
 };
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  GetStorage box = GetStorage();
+  @override
+  void initState() {
+    box.erase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,9 +74,25 @@ class WelcomePage extends StatelessWidget {
   }
 }
 
-class Tile extends StatelessWidget {
+class Tile extends StatefulWidget {
   final String? str;
   Tile({required this.str});
+
+  @override
+  State<Tile> createState() => _TileState();
+}
+
+class _TileState extends State<Tile> {
+  GetStorage box = GetStorage();
+  String nerd() {
+    late String c;
+    c = box.read(widget.str!) ?? 'Sign In';
+    box.listen(() {
+      c = box.read(widget.str!) ?? 'Sign In';
+    });
+    return c;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -71,29 +100,43 @@ class Tile extends StatelessWidget {
       children: [
         Buttons(
           func: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (context) => AddInfo(
-                user: str,
-              ),
-            );
+            box.read(widget.str!) == null
+                ? showModalBottomSheet(
+                    context: context,
+                    builder: (context) => AddInfo(
+                      user: widget.str,
+                    ),
+                  )
+                : Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShowData(
+                              userName: widget.str,
+                            )),
+                  );
           },
-          str: str,
+          str: widget.str,
           color: Colors.lightBlueAccent,
-          width: 300,
+          width: 250,
         ),
         Buttons(
           func: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (context) => AddInfo(
-                user: str,
-              ),
-            );
+            box.read(widget.str!) == null
+                ? showModalBottomSheet(
+                    context: context,
+                    builder: (context) => AddInfo(
+                      user: widget.str,
+                    ),
+                  )
+                : setState(() {
+                    box.remove(widget.str!);
+                    box.remove('${widget.str} gender');
+                    box.remove('${widget.str} age');
+                  });
           },
-          str: 'okay',
+          str: nerd(),
           color: Colors.purpleAccent,
-          width: 100,
+          width: 10,
         ),
       ],
     );

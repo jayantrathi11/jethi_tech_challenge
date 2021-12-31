@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:jethi_tech/screens/show.dart';
+import 'package:provider/provider.dart';
+import 'package:jethi_tech/person.dart';
 
 class AddInfo extends StatelessWidget {
+  GetStorage box = GetStorage();
   String gender = 'Male';
   late String age;
   final String? user;
@@ -24,29 +27,29 @@ class AddInfo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             const Text(
               'Add Info',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.lightBlueAccent,
-                fontSize: 30,
+                fontSize: 25,
                 fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             const Text(
               'Gender',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             CupertinoPicker(
-              itemExtent: 38,
+              itemExtent: 35,
               onSelectedItemChanged: (index) {
                 gender = index == 0 ? 'Male' : 'Female';
               },
@@ -54,7 +57,7 @@ class AddInfo extends StatelessWidget {
                 Text(
                   'Male',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.lightBlueAccent,
                   ),
@@ -62,7 +65,7 @@ class AddInfo extends StatelessWidget {
                 Text(
                   'Female',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.lightBlueAccent,
                   ),
@@ -70,11 +73,11 @@ class AddInfo extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 30,
+              height: 15,
             ),
             const Text(
               'Age',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             TextField(
               autofocus: true,
@@ -84,20 +87,23 @@ class AddInfo extends StatelessWidget {
               },
             ),
             const SizedBox(
-              height: 30,
+              height: 15,
             ),
             Container(
               color: Colors.lightBlueAccent,
               child: TextButton(
-                onPressed: () {
-                  GetStorage box = GetStorage();
+                onPressed: () async {
                   box.write('$user gender', gender);
                   box.write('$user age', age);
-                  box.write(user!, 'signedin');
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ShowData(userName: user)));
+                  box.write(user!, 'Sign Out');
+                  Provider.of<Person>(context, listen: false)
+                      .add(user, gender, age);
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ShowData(userName: user),
+                    ),
+                  );
                   Navigator.pop(context);
                 },
                 child: const Text(

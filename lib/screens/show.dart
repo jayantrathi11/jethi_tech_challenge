@@ -3,23 +3,31 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jethi_tech/helper/buttons.dart';
 
-class ShowData extends StatelessWidget {
+class ShowData extends StatefulWidget {
   final String? userName;
-  GetStorage box = GetStorage();
+
   ShowData({required this.userName});
+
+  @override
+  State<ShowData> createState() => _ShowDataState();
+}
+
+class _ShowDataState extends State<ShowData> {
+  GetStorage box = GetStorage();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
               'Jethi',
               style: GoogleFonts.libreBaskerville(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
               ),
@@ -40,7 +48,7 @@ class ShowData extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              userName!,
+              widget.userName!,
               style: const TextStyle(
                 fontSize: 50,
                 color: Colors.black,
@@ -48,7 +56,7 @@ class ShowData extends StatelessWidget {
               ),
             ),
             Text(
-              box.read('$userName gender') ?? 'okay',
+              box.read('${widget.userName} gender') ?? 'okay',
               style: const TextStyle(
                 fontSize: 50,
                 color: Colors.black,
@@ -56,7 +64,7 @@ class ShowData extends StatelessWidget {
               ),
             ),
             Text(
-              box.read('$userName age') ?? 'okay',
+              box.read('${widget.userName} age') ?? 'okay',
               style: const TextStyle(
                 fontSize: 50,
                 color: Colors.black,
@@ -66,9 +74,9 @@ class ShowData extends StatelessWidget {
             Buttons(
               color: Colors.purpleAccent,
               func: () {
-                box.remove(userName!);
-                box.remove('$userName gender');
-                box.remove('$userName age');
+                box.remove(widget.userName!);
+                box.remove('${widget.userName} gender');
+                box.remove('${widget.userName} age');
                 Navigator.pop(context);
               },
               str: 'Sign Out',
