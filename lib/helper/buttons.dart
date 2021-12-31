@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 
 class Buttons extends StatelessWidget {
   final Color color;
-  //final VoidCallback func;
-  final String str;
-  Buttons({required this.color, required this.str});
+  final VoidCallback func;
+  final int width;
+  final String? str;
+  Buttons(
+      {required this.color,
+      required this.func,
+      required this.str,
+      required this.width});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -14,12 +19,13 @@ class Buttons extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.circular(30.0),
         child: MaterialButton(
-          onPressed: () {},
-          minWidth: 200.0,
+          onPressed: func,
+          minWidth: width.toDouble(),
           height: 42.0,
           child: Text(
-            str,
+            str!,
             style: const TextStyle(
+              fontSize: 18,
               color: Colors.white,
             ),
           ),
