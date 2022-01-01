@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jethi_tech/helper/buttons.dart';
+import 'package:provider/provider.dart';
+import 'package:jethi_tech/person.dart';
 
 class ShowData extends StatefulWidget {
   final String? userName;
-
-  ShowData({required this.userName});
+  final int index;
+  ShowData({required this.userName, required this.index});
 
   @override
   State<ShowData> createState() => _ShowDataState();
@@ -77,6 +79,8 @@ class _ShowDataState extends State<ShowData> {
                 box.remove(widget.userName!);
                 box.remove('${widget.userName} gender');
                 box.remove('${widget.userName} age');
+                Provider.of<Person>(context, listen: false)
+                    .change(widget.index);
                 Navigator.pop(context);
               },
               str: 'Sign Out',

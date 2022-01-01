@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:jethi_tech/screens/addinfo.dart';
 import 'package:jethi_tech/screens/show.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:jethi_tech/person.dart';
 
 const list = {
   "users": [
@@ -67,7 +69,10 @@ class _WelcomePageState extends State<WelcomePage> {
       body: ListView.builder(
         itemCount: list['users']?.length,
         itemBuilder: (context, index) {
-          return Tile(str: list['users']![index]['name']);
+          return Tile(
+            str: list['users']![index]['name'],
+            index: index,
+          );
         },
       ),
     );
@@ -76,7 +81,8 @@ class _WelcomePageState extends State<WelcomePage> {
 
 class Tile extends StatefulWidget {
   final String? str;
-  Tile({required this.str});
+  final int index;
+  Tile({required this.str, required this.index});
 
   @override
   State<Tile> createState() => _TileState();
@@ -84,14 +90,6 @@ class Tile extends StatefulWidget {
 
 class _TileState extends State<Tile> {
   GetStorage box = GetStorage();
-  String nerd() {
-    late String c;
-    c = box.read(widget.str!) ?? 'Sign In';
-    box.listen(() {
-      c = box.read(widget.str!) ?? 'Sign In';
-    });
-    return c;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +103,7 @@ class _TileState extends State<Tile> {
                     context: context,
                     builder: (context) => AddInfo(
                       user: widget.str,
+                      index: widget.index,
                     ),
                   )
                 : Navigator.push(
@@ -112,6 +111,7 @@ class _TileState extends State<Tile> {
                     MaterialPageRoute(
                         builder: (context) => ShowData(
                               userName: widget.str,
+                              index: widget.index,
                             )),
                   );
           },
@@ -120,12 +120,13 @@ class _TileState extends State<Tile> {
           width: 250,
         ),
         Buttons(
-          func: () {
+          func: () async {
             box.read(widget.str!) == null
                 ? showModalBottomSheet(
                     context: context,
                     builder: (context) => AddInfo(
                       user: widget.str,
+                      index: widget.index,
                     ),
                   )
                 : setState(() {
@@ -133,8 +134,13 @@ class _TileState extends State<Tile> {
                     box.remove('${widget.str} gender');
                     box.remove('${widget.str} age');
                   });
+            if (Provider.of<Person>(context, listen: false).list[widget.index]
+                    [0] ==
+                'Sign Out') {
+              Provider.of<Person>(context, listen: false).change(widget.index);
+            }
           },
-          str: nerd(),
+          str: Provider.of<Person>(context).list[widget.index][0],
           color: Colors.purpleAccent,
           width: 10,
         ),

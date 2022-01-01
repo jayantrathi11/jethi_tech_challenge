@@ -10,7 +10,8 @@ class AddInfo extends StatelessWidget {
   String gender = 'Male';
   late String age;
   final String? user;
-  AddInfo({required this.user});
+  final int index;
+  AddInfo({required this.user, required this.index});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -96,14 +97,16 @@ class AddInfo extends StatelessWidget {
                   box.write('$user gender', gender);
                   box.write('$user age', age);
                   box.write(user!, 'Sign Out');
-                  Provider.of<Person>(context, listen: false)
-                      .add(user, gender, age);
                   await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ShowData(userName: user),
+                      builder: (context) => ShowData(
+                        userName: user,
+                        index: index,
+                      ),
                     ),
                   );
+                  Provider.of<Person>(context, listen: false).change(index);
                   Navigator.pop(context);
                 },
                 child: const Text(
