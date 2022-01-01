@@ -1,6 +1,6 @@
 # jethi_tech
 
-A new Flutter project.
+![Simulator_Screen_Recording_-_iPhone_13_Pro_Max_-_2022-01-01_at_15_02_20_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/60975809/147847924-be070203-9ed9-4a45-b588-c461c4d8fe89.gif)
 
 ## Getting Started
 
