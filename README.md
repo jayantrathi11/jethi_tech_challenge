@@ -1,6 +1,6 @@
 # jethi_tech
 
-![Simulator_Screen_Recording_-_iPhone_13_Pro_Max_-_2022-01-01_at_15_02_20_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/60975809/147847924-be070203-9ed9-4a45-b588-c461c4d8fe89.gif)
+![Simulator_Screen_Recording_-_iPhone_13_Pro_Max_-_2022-01-01_at_15_02_20_AdobeCreativeCloudExpress (1)](https://user-images.githubusercontent.com/60975809/147847954-652c7dfb-0fc9-484b-99cd-fd21b37ec754.gif)
 
 ## Getting Started
 
